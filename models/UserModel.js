@@ -1,13 +1,14 @@
 const { default: mongoose } = require("mongoose");
 const { userStatus, userType } = require("../utils/constants");
-
+const validator = require("validator");
 const userSchema=new mongoose.Schema({
     userId:{
         type:String,
         required:true,
         minLength:5,
         maxLength:10,
-        unique:true
+        unique:true,
+        lowercase:true
     },
     password:{
         type:String,
@@ -16,7 +17,10 @@ const userSchema=new mongoose.Schema({
     email:{
         type:String,
         required:true,
-        unique:true
+        unique:true,
+        validate:{
+            validator:validator.isEmail
+        }
     },
     status:{
         type:String,

@@ -5,7 +5,7 @@ const jwt=require("jsonwebtoken")
 const register=async (req,res)=>{
   var {userId,password,email,userType}=req.body;
   if(!userType){
-    userType:constants.userType.pending
+    userType:constants.userType.engineer
   }
   var hashedpassword=bcrypt.hashSync(password,10);
   var users={
@@ -30,7 +30,8 @@ const register=async (req,res)=>{
 
 }
 const login=async (req,res)=>{
-    const{userId,password}=req.body;
+    let {userId,password}=req.body;
+    userId=userId.toLowerCase();
     if(!userId || !password){
         return res.status(400).send({message:"userId/ password cann't be empty"})
     }
