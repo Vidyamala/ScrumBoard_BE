@@ -30,7 +30,8 @@ const TaskSchema=new mongoose.Schema({
     },
     priority:{
         type:String,
-        require:true
+        require:true,
+        default:"low"
     },
     acceptanceCriteria:{
         type:String,

@@ -1,13 +1,24 @@
 const Task=require("../models/TaskModel");
 const UserModel = require("../models/UserModel");
 exports.createTask=async(req,res)=>{
-    var {taskName,phase,project,sprint,category,acceptanceCriteria,estimatedEffort,createdBy,assignee}=req.body;
+    var {taskName,phase,project,sprint,category,acceptanceCriteria,estimatedEffort,createdBy,assignee,status,priority}=req.body;
     createdBy=req.user;
     assignee=assignee.toLowerCase();
     
-    var  task={taskName,phase,project,sprint,category,acceptanceCriteria,estimatedEffort,createdBy,assignee};
+    var  task={taskName,phase,project,sprint,category,acceptanceCriteria,estimatedEffort,createdBy,assignee,status,priority};
     var newTask=await Task.create(task);
     res.send(newTask);
+}
+exports.getTask=async(req,res)=>{
+    var {project,phase,sprint,category}=req.query;
+    console.log(project,phase,sprint,category)
+    try{
+        var task=await Task.find({project,phase,sprint,category})
+    res.status(200).send(task);
+    }
+    catch(e){
+        res.status(500).send({message:e.message})
+    }
 }
 exports.getDistinctProject=async(req,res)=>{
     var user=req.user;
@@ -22,7 +33,7 @@ exports.getPhase=async(req,res)=>{
     res.send(projects)
 }
 exports.getSprint=async(req,res)=>{
-    var {project,phase}=req.body;
+    var {project,phase}=req.query;
     var sprint=await Task.find({project,phase},{sprint:1,_id:0}).distinct("sprint");
     res.send(sprint)
 }

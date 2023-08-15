@@ -36,6 +36,9 @@ const login=async (req,res)=>{
         return res.status(400).send({message:"userId/ password cann't be empty"})
     }
     const users=await user.findOne({userId:userId});
+    if(users.status!=constants.userStatus.approved){
+      return res.status(403).send({message:`${userId} is in ${users.status}, please contact Admin`})
+    }
     if(!users){
        return res.status(400).send({message:`${userId} doesn't exists`})
     }
