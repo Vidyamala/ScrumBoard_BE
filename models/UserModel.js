@@ -30,7 +30,13 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
         default:userType.engineer
-    }
+    },
+    project:[
+        {
+            type:String,
+            required:true
+        },
+    ]
 },{
     timeStamp:true
 })

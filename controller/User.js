@@ -8,9 +8,27 @@ const updateUser=async (req,res)=>{
    
    }
    catch(e){
-    console.log(e.message)
+   res.status(500).send({message:e.message})
    }
 }
+const addProject=async(req,res)=>{
+    try{
+        var {project}=req.body;
+        var userId=req.params.id;
+        var userDetail=await user.findOneAndUpdate({userId}, {
+            $push: { project: project },
+          },
+          {
+            new: true,
+          });
+          res.status(200).send({message:"Updated successfully",user:userDetail})
+
+    }
+    catch(e){
+        res.status(500).send({message:e.message})
+    }
+}
 module.exports={
-    updateUser
+    updateUser,
+    addProject
 }

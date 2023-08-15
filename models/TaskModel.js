@@ -1,0 +1,50 @@
+const { default: mongoose } = require("mongoose");
+const TaskSchema=new mongoose.Schema({
+    taskName:{
+        type:String,
+        require:true
+    },
+    createBy:{
+        type:String,
+        require:true
+    },
+    project:{
+        type:String,
+        require:true
+    },
+    phase:{
+        type:String,
+        require:true
+    },
+    sprint:{
+        type:Number,
+        require:true
+    },
+    category:{
+        type:String,
+        require:true
+    },
+    status:{
+        type:String,
+        require:true
+    },
+    priority:{
+        type:String,
+        require:true
+    },
+    acceptanceCriteria:{
+        type:String,
+        require:true
+    },
+    assignee:{
+        type:String,
+        require:true
+    },
+    estimatedEffort:{
+        type:Number,
+        require:true
+    }
+},{
+    timeStamp:true
+})
+module.exports=mongoose.model("Task",TaskSchema);
