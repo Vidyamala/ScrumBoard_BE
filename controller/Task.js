@@ -1,11 +1,11 @@
 const Task=require("../models/TaskModel");
 const UserModel = require("../models/UserModel");
 exports.createTask=async(req,res)=>{
-    var {taskName,phase,project,sprint,category,acceptanceCriteria,estimatedEffort,createdBy,assignee,status,priority}=req.body;
-    createdBy=req.user;
+    var {taskname,phase,project,sprint,category,acceptanceCriteria,estimatedEffort,createdBy,assignee,status,priority}=req.body;
+    createdBy=req.user.userId;
     assignee=assignee.toLowerCase();
     
-    var  task={taskName,phase,project,sprint,category,acceptanceCriteria,estimatedEffort,createdBy,assignee,status,priority};
+    var  task={taskName:taskname,phase,project,sprint,category,acceptanceCriteria,estimatedEffort,createdBy,assignee,status,priority};
     var newTask=await Task.create(task);
     res.send(newTask);
 }
@@ -39,5 +39,64 @@ exports.getSprint=async(req,res)=>{
 }
 exports.getCategory=async(req,res)=>{
     var projects=await Task.distinct("category");
+    res.send(projects)
+}
+exports.createProject=async(req,res)=>{
+    var {project}=req.body;
+  try{
+    var Project=await Task.create({project});
+    console.log(Project);
+    res.status(201).send({message:`${project} created Successfully`})
+  }
+  catch(e){
+    res.status(500).send({message:e.message})
+  }
+}
+exports.createCategory=async(req,res)=>{
+    var {category}=req.body;
+   var Category=await Task.create({category});
+   console.log(Category);
+   res.status(201).send({message:`${category} created Successfully`})
+}
+exports.createPhase=async(req,res)=>{
+    var {project,phase}=req.body;
+   var Phase=await Task.create({project,phase});
+   console.log(Phase);
+   res.status(201).send({message:`${category} created Successfully`})
+}
+exports.createSprint=async(req,res)=>{
+    var {project,phase,sprint}=req.body;
+   var Sprint=await Task.create({project,phase,sprint});
+   console.log(Sprint);
+   res.status(201).send({message:`${sprint} created Successfully`})
+}
+exports.updateTask=async(req,res)=>{
+    const id=req.params.id;
+    var {project,phase,sprint,taskName,status,estimatedEffort,acceptanceCriteria,assignee,category,priority}=req.body;
+    var newDetails={
+        project,phase,sprint,taskName,status,estimatedEffort,acceptanceCriteria,assignee,category,priority
+    }
+    var crtdetails={};
+    for(const i in newDetails){
+        if(newDetails[i]){
+            crtdetails[i]=newDetails[i];
+        }
+    }
+   try{
+    const UpdatedTask= await Task.findOneAndUpdate({_id:id},{
+        ...crtdetails
+    },{
+        new:true
+    });
+    return res.status(200).send({message:"Task updated successfully",Task:UpdatedTask})
+   }
+   catch(e){
+    res.status(500).send({message:"Internal server error",error:e.message})
+   }
+   
+}
+exports.getAllProject=async(req,res)=>{
+   
+    var projects=await Task.find({},{project:1,_id:0}).distinct("project");
     res.send(projects)
 }

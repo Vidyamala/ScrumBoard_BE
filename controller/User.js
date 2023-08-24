@@ -28,7 +28,35 @@ const addProject=async(req,res)=>{
         res.status(500).send({message:e.message})
     }
 }
+const getUserById=async(req,res)=>{
+    var {id}=req.params;
+   
+    try{
+        
+        var users=await user.findOne({userId:id})
+       
+    res.status(200).send(users);
+    }
+    catch(e){
+        res.status(500).send({message:e.message})
+    }
+}
+const getAllUserId=async(req,res)=>{
+  var query=req.query;
+    try{
+        
+        var users=await user.find({...query},{userId:1,_id:0}).distinct("userId")
+       
+    res.status(200).send(users);
+    }
+    catch(e){
+        res.status(500).send({message:e.message})
+    }
+}
+
 module.exports={
     updateUser,
-    addProject
+    addProject,
+    getUserById,
+    getAllUserId
 }
