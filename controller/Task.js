@@ -27,6 +27,8 @@ exports.getSprint=async(req,res)=>{
     res.send(sprint)
 }
 exports.getCategory=async(req,res)=>{
+    console.log("Inside category");
     var projects=await Task.distinct("category");
+    console.log(projects)
     res.send(projects)
 }
