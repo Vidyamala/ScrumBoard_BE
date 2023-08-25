@@ -17,7 +17,7 @@ const TaskSchema=new mongoose.Schema({
         require:true
     },
     sprint:{
-        type:Number,
+        type:String,
         require:true
     },
     category:{

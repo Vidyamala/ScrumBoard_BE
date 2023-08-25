@@ -13,7 +13,8 @@ exports.getTask=async(req,res)=>{
     var {project,phase,sprint,category}=req.query;
     console.log(project,phase,sprint,category)
     try{
-        var task=await Task.find({project,phase,sprint,category})
+      var task=await Task.find({project:project,phase:phase,sprint:sprint,category:category});
+        console.log(task)
     res.status(200).send(task);
     }
     catch(e){
@@ -62,10 +63,12 @@ exports.createPhase=async(req,res)=>{
     var {project,phase}=req.body;
    var Phase=await Task.create({project,phase});
    console.log(Phase);
-   res.status(201).send({message:`${category} created Successfully`})
+   res.status(201).send({message:`${phase} created Successfully`})
 }
 exports.createSprint=async(req,res)=>{
     var {project,phase,sprint}=req.body;
+    sprint=sprint.toString();
+    console.log(project,phase,sprint)
    var Sprint=await Task.create({project,phase,sprint});
    console.log(Sprint);
    res.status(201).send({message:`${sprint} created Successfully`})
