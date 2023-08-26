@@ -24,8 +24,9 @@ exports.getTask=async(req,res)=>{
 exports.getDistinctProject=async(req,res)=>{
     var user=req.user;
 
-    var projects=await UserModel.findOne({_id:user._id},{project:1,_id:0});
-    res.send(projects)
+    var projects=await UserModel.findOne({_id:user._id},{project:1,_id:0}).distinct("project");
+ 
+    res.send({project:projects})
 }
 exports.getPhase=async(req,res)=>{
     var {project}=req.query;
@@ -75,9 +76,19 @@ exports.createSprint=async(req,res)=>{
 }
 exports.updateTask=async(req,res)=>{
     const id=req.params.id;
+
     var {project,phase,sprint,taskName,status,estimatedEffort,acceptanceCriteria,assignee,category,priority}=req.body;
     var newDetails={
-        project,phase,sprint,taskName,status,estimatedEffort,acceptanceCriteria,assignee,category,priority
+        project:project,
+        phase:phase,
+        sprint:sprint,
+        taskName:taskName,
+        status:status,
+        estimatedEffort:estimatedEffort,
+        acceptanceCriteria:acceptanceCriteria,
+        assignee:assignee,
+        category:category,
+        priority:priority
     }
     var crtdetails={};
     for(const i in newDetails){
@@ -85,6 +96,7 @@ exports.updateTask=async(req,res)=>{
             crtdetails[i]=newDetails[i];
         }
     }
+    console.log(newDetails,crtdetails,id)
    try{
     const UpdatedTask= await Task.findOneAndUpdate({_id:id},{
         ...crtdetails

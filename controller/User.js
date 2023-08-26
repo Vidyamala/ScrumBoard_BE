@@ -43,6 +43,7 @@ const getUserById=async(req,res)=>{
 }
 const getAllUserId=async(req,res)=>{
   var query=req.query;
+  console.log(query)
     try{
         
         var users=await user.find({...query},{userId:1,_id:0}).distinct("userId")
