@@ -4,7 +4,7 @@ const TaskSchema=new mongoose.Schema({
         type:String,
         require:true
     },
-    createBy:{
+    createdBy:{
         type:String,
         require:true
     },
@@ -17,7 +17,7 @@ const TaskSchema=new mongoose.Schema({
         require:true
     },
     sprint:{
-        type:Number,
+        type:String,
         require:true
     },
     category:{
@@ -30,7 +30,8 @@ const TaskSchema=new mongoose.Schema({
     },
     priority:{
         type:String,
-        require:true
+        require:true,
+        default:"low"
     },
     acceptanceCriteria:{
         type:String,
